@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">小记</string>
+
+    <!--天干-->
+    <string-array name="heavenly">
+        <item>甲</item>
+        <item>乙</item>
+        <item>丙</item>
+        <item>丁</item>
+        <item>戊</item>
+        <item>己</item>
+        <item>庚</item>
+        <item>辛</item>
+        <item>壬</item>
+        <item>癸</item>
+    </string-array>
+    <!--地支-->
+    <string-array name="earthly">
+        <item>子</item>
+        <item>丑</item>
+        <item>寅</item>
+        <item>卯</item>
+        <item>辰</item>
+        <item>巳</item>
+        <item>午</item>
+        <item>未</item>
+        <item>申</item>
+        <item>酉</item>
+        <item>戌</item>
+        <item>亥</item>
+    </string-array>
+    <string name="leap">闰</string>
+    <string name="label_compose">撰</string>
+    <string name="label_edit">改</string>
+    <string name="label_share">存</string>
+    <string name="label_delete">删</string>
+    <string name="logo_char_0">小</string>
+    <string name="logo_char_1">记</string>
+
+    <string name="request_sdcard_permission">分享时需要将图片保存到 SD 卡</string>
+</resources>
