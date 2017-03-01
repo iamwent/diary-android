@@ -14,6 +14,7 @@
         <item>壬</item>
         <item>癸</item>
     </string-array>
+
     <!--地支-->
     <string-array name="earthly">
         <item>子</item>
@@ -29,11 +30,12 @@
         <item>戌</item>
         <item>亥</item>
     </string-array>
+
     <string name="leap">闰</string>
     <string name="label_compose">撰</string>
     <string name="label_edit">改</string>
     <string name="label_share">存</string>
-    <string name="label_delete">删</string>
+    <string name="label_delete">删</string>gst
     <string name="logo_char_0">小</string>
     <string name="logo_char_1">记</string>
 
