@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 
-def gitVersionCode() {
+static def gitVersionCode() {
     def cmd = 'git rev-list HEAD --count'
     cmd.execute().text.trim().toInteger()
 }
 
-def gitVersionTag() {
+static def gitVersionTag() {
     def cmd = 'git describe --tags'
     def version = cmd.execute().text.trim()
 
@@ -33,6 +34,8 @@ android {
         versionCode 2
         versionName "1.0.2"
 
+        manifestPlaceholders = [FABRIC_KEY: FABRIC_KEY]
+
         resConfigs "en", "zh"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -56,6 +59,7 @@ android {
 
     buildTypes {
         debug {
+            applicationIdSuffix ".debug"
             debuggable true
             minifyEnabled false
             signingConfig signingConfigs.debug
@@ -73,7 +77,7 @@ android {
 
         // Avoid heavy computations
         applicationVariants.all { variant ->
-            if (variant.buildType.name.equals('release')) {
+            if (variant.buildType.name == 'release') {
 
                 def code = gitVersionCode();
                 def name = gitVersionTag();
@@ -103,8 +107,8 @@ android {
 
     // Remove mockRelease as it's not needed.
     android.variantFilter { variant ->
-        if (variant.buildType.name.equals('release') &&
-                variant.getFlavors().get(0).name.equals('mock')) {
+        if (variant.buildType.name == 'release' &&
+                variant.getFlavors().get(0).name == 'mock') {
             // remove mock release
             variant.setIgnore(true);
         }
@@ -118,10 +122,19 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile('com.android.support:recyclerview-v7:25.2.0'){
+        exclude module: 'appcompat-v4'
+    }
     compile('uk.co.chrisjenx:calligraphy:2.2.0') {
         exclude module: 'support-v4'
     }
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+        transitive = true;
+    }
 
     testCompile 'junit:junit:4.12'
+}
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
 }
