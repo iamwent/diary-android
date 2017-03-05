@@ -15,3 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# for crashlytics
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
