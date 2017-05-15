@@ -3,7 +3,7 @@
 Android implementation for [kevinzhow's Diary](https://github.com/kevinzhow/Diary).
 
 ## Download
-(http://fir.im/mydiary)[http://fir.im/mydiary]
+[http://fir.im/mydiary](http://fir.im/mydiary)
 
 ## License
 
