@@ -22,15 +22,12 @@ import android.widget.LinearLayout;
 import com.iamwent.diary.R;
 import com.iamwent.diary.data.DiaryRepository;
 import com.iamwent.diary.data.bean.Diary;
-import com.iamwent.diary.modules.editor.EditorActivity;
 import com.iamwent.diary.utils.LunarUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class PreviewActivity extends Activity implements View.OnClickListener {
 
@@ -127,17 +124,17 @@ public class PreviewActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_compose:
-                EditorActivity.start(PreviewActivity.this, id);
-                break;
-            case R.id.btn_share:
-                share();
-                break;
-            case R.id.btn_delete:
-                delete();
-                break;
-            default:
-                break;
+//            case R.id.btn_compose:
+//                EditorActivity.start(PreviewActivity.this, id);
+//                break;
+//            case R.id.btn_share:
+//                share();
+//                break;
+//            case R.id.btn_delete:
+//                delete();
+//                break;
+//            default:
+//                break;
         }
     }
 
@@ -168,7 +165,7 @@ public class PreviewActivity extends Activity implements View.OnClickListener {
 
     private Bitmap screenshot(WebView webView) {
         webView.measure(View.MeasureSpec.makeMeasureSpec(
-                View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED),
+                        View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         webView.layout(0, 0, webView.getMeasuredWidth(), webView.getMeasuredHeight());
         webView.setDrawingCacheEnabled(true);
@@ -192,11 +189,6 @@ public class PreviewActivity extends Activity implements View.OnClickListener {
     private void delete() {
         DiaryRepository.getInstance(this).delete(id);
         onBackPressed();
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     private String readingHtml() {

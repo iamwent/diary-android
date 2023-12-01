@@ -1,12 +1,11 @@
 package com.iamwent.diary.modules.year;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.iamwent.diary.R;
@@ -17,7 +16,6 @@ import com.iamwent.diary.widget.OnRecyclerItemClickedListener;
 import java.util.Collections;
 import java.util.List;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class YearActivity extends Activity {
 
@@ -56,8 +54,4 @@ public class YearActivity extends Activity {
         recyclerView.setAdapter(adapter);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 }

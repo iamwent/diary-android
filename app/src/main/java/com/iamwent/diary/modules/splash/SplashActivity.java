@@ -3,20 +3,17 @@ package com.iamwent.diary.modules.splash;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 import com.iamwent.diary.R;
 import com.iamwent.diary.data.DiaryRepository;
 import com.iamwent.diary.modules.year.YearActivity;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SplashActivity extends Activity {
 
@@ -39,11 +36,9 @@ public class SplashActivity extends Activity {
 
         DiaryRepository.getInstance(this);
         requestSdcardPermission();
-    }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+        YearActivity.start(SplashActivity.this);
+        finish();
     }
 
     @Override

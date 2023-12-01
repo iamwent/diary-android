@@ -1,15 +1,14 @@
 package com.iamwent.diary.modules.month;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.LayoutRes;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.iamwent.diary.R;
-import com.iamwent.diary.data.bean.Diary;
 import com.iamwent.diary.utils.LunarUtil;
 
 import java.util.List;

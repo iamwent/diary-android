@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.iamwent.diary.R;
 import com.iamwent.diary.data.DiaryRepository;
@@ -19,8 +20,6 @@ import com.iamwent.diary.widget.OnRecyclerItemClickedListener;
 
 import java.util.Collections;
 import java.util.List;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class DayActivity extends Activity {
     private static final String EXTRA_YEAR = "year";
@@ -65,11 +64,11 @@ public class DayActivity extends Activity {
         titleMonth.setText(String.format("%s月", LunarUtil.month2Chinese(month)));
 
         findViewById(R.id.btn_compose).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        EditorActivity.start(DayActivity.this);
-                    }
-                });
+            @Override
+            public void onClick(View v) {
+                EditorActivity.start(DayActivity.this);
+            }
+        });
     }
 
     @Override
@@ -81,8 +80,4 @@ public class DayActivity extends Activity {
         recyclerView.setAdapter(adapter);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 }

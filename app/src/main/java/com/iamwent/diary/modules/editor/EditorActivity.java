@@ -13,7 +13,6 @@ import com.iamwent.diary.utils.LunarUtil;
 
 import java.util.Calendar;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class EditorActivity extends Activity {
 
@@ -99,8 +98,4 @@ public class EditorActivity extends Activity {
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 }

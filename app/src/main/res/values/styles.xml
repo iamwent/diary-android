@@ -1,13 +1,13 @@
 <resources>
 
-    <style name="AppTheme" parent="@android:style/Theme.Material.Light.NoActionBar.Fullscreen"></style>
+    <style name="AppTheme" parent="@android:style/Theme.Material.Light.NoActionBar.Fullscreen"/>
 
     <style name="TextAppearance.KhangXiDict" parent="android:TextAppearance">
-        <item name="fontPath">fonts/TpldKhangXiDictTrial.otf</item>
+        <item name="android:fontFamily">@font/tpld_khangxidicttrial</item>
     </style>
 
     <style name="TextAppearance.FLongZhao" parent="android:TextAppearance">
-        <item name="fontPath">fonts/FZLongZhaoFW.ttf</item>
+        <item name="android:fontFamily">@font/fz_longzhao_fw</item>
     </style>
 
 </resources>
