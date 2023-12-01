@@ -40,7 +40,7 @@ class DayActivity : ComponentActivity() {
         recyclerView!!.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true)
         recyclerView!!.addOnItemTouchListener(object : OnRecyclerItemClickedListener(this@DayActivity) {
             override fun onItemClick(view: View?, position: Int) {
-                PreviewActivity.start(this@DayActivity, diaries[position].id)
+                PreviewActivity.start(this@DayActivity, diaries[position])
             }
         })
         adapter = DayListAdapter(this, diaries)

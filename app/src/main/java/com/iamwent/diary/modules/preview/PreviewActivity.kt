@@ -33,7 +33,6 @@ class PreviewActivity : ComponentActivity(), View.OnClickListener {
     private var webView: WebView? = null
     private var layoutContainer: LinearLayout? = null
     private val contentWidthOffset = 205
-    private var id: Long = 0
     private var diary: Diary? = null
     private var toVisiable = true
 
@@ -45,7 +44,7 @@ class PreviewActivity : ComponentActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         WebView.enableSlowWholeDocumentDraw()
         setContentView(R.layout.activity_preview)
-        id = intent.getLongExtra(EXTRA_DIARY, 0L)
+        diary = intent.getParcelableExtra(EXTRA_DIARY)
         layoutContainer = findViewById<View>(R.id.layout_container) as LinearLayout
         webView = findViewById<View>(R.id.web) as WebView
         webView!!.settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
@@ -67,7 +66,6 @@ class PreviewActivity : ComponentActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        diary = diaryRepository.queryDiary(id)
         val html = readingHtml()
             ?.replace(HOLDER_CONTENT_MARGIN, "10")
             ?.replace(HOLDER_MIN_WIDTH, 160.toString())
@@ -98,7 +96,7 @@ class PreviewActivity : ComponentActivity(), View.OnClickListener {
     private fun save2sdcard(bitmap: Bitmap): String? {
         val path =
             (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
-                    + File.separator + id + ".jpg")
+                    + File.separator + diary?.id + ".jpg")
         try {
             FileOutputStream(path).use { out ->
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
@@ -137,7 +135,7 @@ class PreviewActivity : ComponentActivity(), View.OnClickListener {
     }
 
     private fun delete() {
-        diaryRepository.delete(id)
+        diary?.let { diaryRepository.delete(it) }
         onBackPressed()
     }
 
@@ -173,9 +171,9 @@ class PreviewActivity : ComponentActivity(), View.OnClickListener {
         private const val ENCODING = "utf-8"
         private const val contentMargin = 10
         private const val titleMarginRight = 15
-        fun start(context: Context, id: Long) {
+        fun start(context: Context, diary: Diary) {
             val starter = Intent(context, PreviewActivity::class.java)
-            starter.putExtra(EXTRA_DIARY, id)
+            starter.putExtra(EXTRA_DIARY, diary)
             context.startActivity(starter)
         }
     }

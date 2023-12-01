@@ -2,6 +2,7 @@ package com.iamwent.diary.di
 
 import android.content.Context
 import com.iamwent.diary.data.DiaryRepository
+import com.iamwent.diary.data.local.DiaryDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,8 +17,17 @@ object AppModule {
     @Singleton
     @Provides
     fun provideDiaryRepository(
-        @ApplicationContext context: Context
+        diaryDatabase: DiaryDatabase,
     ): DiaryRepository {
-        return DiaryRepository(context)
+        return DiaryRepository(diaryDatabase)
     }
+
+    @Singleton
+    @Provides
+    fun provideDiaryDatabase(
+        @ApplicationContext context: Context
+    ): DiaryDatabase {
+        return DiaryDatabase.get(context)
+    }
+
 }
