@@ -1,7 +1,13 @@
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.parcelize")
+    kotlin("android")
+    kotlin("plugin.parcelize")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 android {
@@ -44,7 +50,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
     packaging {
         resources {
@@ -62,6 +68,9 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+
     testImplementation("junit:junit:4.13.2")
 
     androidTestImplementation("androidx.test:core:1.5.0")

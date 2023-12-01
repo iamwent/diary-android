@@ -7,6 +7,8 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import com.iamwent.diary.data.bean.Diary
 import com.iamwent.diary.data.local.DiaryOpenHelper
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.concurrent.Volatile
 
 /**
@@ -15,15 +17,18 @@ import kotlin.concurrent.Volatile
  * @author iamwent
  * @since 9/20/16
  */
-class DiaryRepository private constructor(ctx: Context) {
+@Singleton
+class DiaryRepository @Inject constructor(ctx: Context) {
+
     private val db: SQLiteDatabase
 
     init {
         db = DiaryOpenHelper(ctx).writableDatabase
     }
 
+    @SuppressLint("Range")
     fun queryYears(): List<Int> {
-        val columns = arrayOf<String>(Diary.YEAR)
+        val columns = arrayOf(Diary.YEAR)
         val orderBy: String = Diary.YEAR + " ASC"
         val cursor = db.query(Diary.TABLE, columns, null, null, Diary.YEAR, null, orderBy, null)
         val years: MutableList<Int> = ArrayList(cursor.count)
@@ -34,6 +39,7 @@ class DiaryRepository private constructor(ctx: Context) {
         return years
     }
 
+    @SuppressLint("Range")
     fun queryMonthsByYear(year: Int): List<Int> {
         val columns = arrayOf<String>(Diary.YEAR, Diary.MONTH)
         val selection = String.format("%s = ?", Diary.YEAR)
@@ -80,7 +86,7 @@ class DiaryRepository private constructor(ctx: Context) {
     }
 
     fun queryDaysByYearAndMonth(year: Int, month: Int): List<Diary> {
-        val columns = arrayOf<String>(
+        val columns = arrayOf(
             Diary.ID,
             Diary.YEAR,
             Diary.MONTH,
@@ -143,20 +149,5 @@ class DiaryRepository private constructor(ctx: Context) {
             location = cursor.getString(cursor.getColumnIndex(Diary.LOCATION)),
             createdAt = cursor.getLong(cursor.getColumnIndex(Diary.CREATED_AT)),
         )
-    }
-
-    companion object {
-        @Volatile
-        private var INSTANCE: DiaryRepository? = null
-        fun getInstance(ctx: Context): DiaryRepository? {
-            if (INSTANCE == null) {
-                synchronized(DiaryRepository::class.java) {
-                    if (INSTANCE == null) {
-                        INSTANCE = DiaryRepository(ctx.applicationContext)
-                    }
-                }
-            }
-            return INSTANCE
-        }
     }
 }

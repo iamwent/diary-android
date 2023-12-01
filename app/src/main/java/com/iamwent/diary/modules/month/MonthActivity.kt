@@ -1,11 +1,11 @@
 package com.iamwent.diary.modules.month
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.iamwent.diary.R
@@ -14,13 +14,20 @@ import com.iamwent.diary.modules.day.DayActivity
 import com.iamwent.diary.modules.editor.EditorActivity
 import com.iamwent.diary.utils.LunarUtil
 import com.iamwent.diary.widget.OnRecyclerItemClickedListener
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class MonthActivity : Activity() {
+@AndroidEntryPoint
+class MonthActivity : ComponentActivity() {
     private var recyclerView: RecyclerView? = null
     private var adapter: MonthListAdapter? = null
     private var months = emptyList<Int>()
     private var year = 0
     private var titleYear: TextView? = null
+
+    @Inject
+    lateinit var diaryRepository: DiaryRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_month)
@@ -44,7 +51,7 @@ class MonthActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
-        months = DiaryRepository.getInstance(this)!!.queryMonthsByYear(year)
+        months = diaryRepository.queryMonthsByYear(year)
         adapter = MonthListAdapter(this, months)
         recyclerView!!.adapter = adapter
     }

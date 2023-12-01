@@ -1,7 +1,6 @@
 package com.iamwent.diary.modules.preview
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -18,21 +17,28 @@ import android.view.animation.AnimationUtils
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.LinearLayout
+import androidx.activity.ComponentActivity
 import com.iamwent.diary.R
 import com.iamwent.diary.data.DiaryRepository
 import com.iamwent.diary.data.bean.Diary
 import com.iamwent.diary.utils.LunarUtil
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import javax.inject.Inject
 
-class PreviewActivity : Activity(), View.OnClickListener {
+@AndroidEntryPoint
+class PreviewActivity : ComponentActivity(), View.OnClickListener {
     private var webView: WebView? = null
     private var layoutContainer: LinearLayout? = null
     private val contentWidthOffset = 205
     private var id: Long = 0
     private var diary: Diary? = null
     private var toVisiable = true
+
+    @Inject
+    lateinit var diaryRepository: DiaryRepository
 
     @SuppressLint("DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +67,7 @@ class PreviewActivity : Activity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        diary = DiaryRepository.getInstance(this)!!.queryDiary(id)
+        diary = diaryRepository.queryDiary(id)
         val html = readingHtml()
             ?.replace(HOLDER_CONTENT_MARGIN, "10")
             ?.replace(HOLDER_MIN_WIDTH, 160.toString())
@@ -131,7 +137,7 @@ class PreviewActivity : Activity(), View.OnClickListener {
     }
 
     private fun delete() {
-        DiaryRepository.getInstance(this)!!.delete(id)
+        diaryRepository.delete(id)
         onBackPressed()
     }
 

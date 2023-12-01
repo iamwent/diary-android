@@ -1,27 +1,34 @@
 package com.iamwent.diary.modules.editor
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import androidx.activity.ComponentActivity
 import com.iamwent.diary.R
 import com.iamwent.diary.data.DiaryRepository
 import com.iamwent.diary.data.bean.Diary
 import com.iamwent.diary.utils.LunarUtil
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
+import javax.inject.Inject
 
-class EditorActivity : Activity() {
+@AndroidEntryPoint
+class EditorActivity : ComponentActivity() {
     private var title: EditText? = null
     private var content: EditText? = null
     private var location: EditText? = null
     private var diary: Diary? = null
+
+    @Inject
+    lateinit var diaryRepository: DiaryRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editor)
         val id = intent.getLongExtra(EXTRA_DIARY, 0L)
-        diary = DiaryRepository.getInstance(this)!!.queryDiary(id)
+        diary = diaryRepository.queryDiary(id)
         if (diary == null) {
             diary = newDiary()
         }
@@ -71,9 +78,9 @@ class EditorActivity : Activity() {
             location = location,
         )
         if (newDiary!!.id != 0L) {
-            DiaryRepository.getInstance(this)!!.update(newDiary)
+            diaryRepository.update(newDiary)
         } else {
-            DiaryRepository.getInstance(this)!!.insert(newDiary)
+            diaryRepository.insert(newDiary)
         }
     }
 
