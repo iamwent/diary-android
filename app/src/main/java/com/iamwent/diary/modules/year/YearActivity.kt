@@ -5,45 +5,51 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.iamwent.diary.R
-import com.iamwent.diary.data.DiaryRepository
+import com.iamwent.diary.databinding.ActivityYearBinding
+import com.iamwent.diary.modules.DiaryViewModel
 import com.iamwent.diary.modules.month.MonthActivity
 import com.iamwent.diary.widget.OnRecyclerItemClickedListener
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class YearActivity : ComponentActivity() {
-    private var recyclerView: RecyclerView? = null
-    private var adapter: YearListAdapter? = null
-    var years = emptyList<Int>()
 
-    @Inject
-    lateinit var diaryRepository: DiaryRepository
+    private val binding: ActivityYearBinding by lazy {
+        DataBindingUtil.setContentView(this, R.layout.activity_year)
+    }
+    private val adapter by lazy { YearListAdapter() }
+
+    private val diaryViewModel by viewModels<DiaryViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_year)
-        recyclerView = findViewById<View>(R.id.year) as RecyclerView
-        recyclerView!!.layoutManager =
+        binding.years.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true)
-        recyclerView!!.addOnItemTouchListener(object :
+        binding.years.addOnItemTouchListener(object :
             OnRecyclerItemClickedListener(this@YearActivity) {
             override fun onItemClick(view: View?, position: Int) {
-                MonthActivity.start(this@YearActivity, years[position])
+                adapter.currentList.getOrNull(position)?.let { year ->
+                    MonthActivity.start(this@YearActivity, year)
+                }
             }
         })
-        adapter = YearListAdapter(this, years)
-        recyclerView!!.adapter = adapter
+        binding.years.adapter = adapter
+
+        lifecycleScope.launch {
+            diaryViewModel.getYears().collectLatest {
+                adapter.submitList(it)
+            }
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        years = diaryRepository.queryYears()
-        adapter = YearListAdapter(this, years)
-        recyclerView!!.adapter = adapter
-    }
 
     companion object {
         fun start(context: Context) {

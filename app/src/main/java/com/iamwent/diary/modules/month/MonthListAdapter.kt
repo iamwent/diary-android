@@ -1,13 +1,11 @@
 package com.iamwent.diary.modules.month
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.iamwent.diary.R
+import com.iamwent.diary.databinding.ItemMonthBinding
 import com.iamwent.diary.utils.LunarUtil
 
 /**
@@ -16,34 +14,31 @@ import com.iamwent.diary.utils.LunarUtil
  * @author iamwent
  * @since 9/19/16
  */
-internal class MonthListAdapter(private val ctx: Context, private val months: List<Int>?) : RecyclerView.Adapter<MonthListAdapter.ViewHolder>() {
-    @LayoutRes
-    private fun provideItemLayout(): Int {
-        return R.layout.item_month
+internal class MonthListAdapter : ListAdapter<Int, MonthViewHolder>(MonthItemCallback) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonthViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemMonthBinding.inflate(inflater, parent, false)
+        return MonthViewHolder(binding)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(ctx).inflate(provideItemLayout(), parent, false)
-        return ViewHolder(view)
+    override fun onBindViewHolder(holder: MonthViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(months!![position])
+}
+
+internal class MonthViewHolder(
+    private val binding: ItemMonthBinding
+) : RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(month: Int) {
+        binding.month.text = "%s月".format(LunarUtil.month2Chinese(month))
     }
+}
 
-    override fun getItemCount(): Int {
-        return months?.size ?: 0
-    }
+object MonthItemCallback : DiffUtil.ItemCallback<Int>() {
+    override fun areItemsTheSame(oldItem: Int, newItem: Int) = oldItem == newItem
 
-    internal class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvYear: TextView
-
-        init {
-            tvYear = itemView.findViewById<View>(R.id.tv_month) as TextView
-        }
-
-        fun bind(month: Int) {
-            tvYear.text = String.format("%s月", LunarUtil.month2Chinese(month))
-        }
-    }
+    override fun areContentsTheSame(oldItem: Int, newItem: Int) = oldItem == newItem
 }

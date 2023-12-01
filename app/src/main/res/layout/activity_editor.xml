@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="32dp"
-    tools:context=".modules.editor.EditorActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <EditText
-        android:id="@+id/et_title"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@null"
-        android:inputType="text"
-        android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.FLongZhao"
-        android:textSize="18sp"
-        tools:ignore="LabelFor" />
+        android:layout_height="match_parent"
+        android:padding="32dp"
+        tools:context=".modules.editor.EditorActivity">
 
-    <EditText
-        android:id="@+id/et_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/et_title"
-        android:layout_marginTop="16dp"
-        android:background="@null"
-        android:inputType="text"
-        android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.FLongZhao"
-        android:textSize="18sp"
-        tools:ignore="LabelFor" />
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.FLongZhao"
+            android:textSize="18sp"
+            tools:ignore="LabelFor" />
 
-    <EditText
-        android:id="@+id/et_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/et_content"
-        android:layout_marginTop="48dp"
-        android:background="@null"
-        android:inputType="text"
-        android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.FLongZhao"
-        android:textSize="18sp"
-        tools:ignore="LabelFor" />
+        <EditText
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginTop="16dp"
+            android:background="@null"
+            android:inputType="text"
+            android:textAppearance="@style/TextAppearance.FLongZhao"
+            android:textSize="18sp"
+            tools:ignore="LabelFor" />
 
-</RelativeLayout>
+        <EditText
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/content"
+            android:layout_marginTop="48dp"
+            android:background="@null"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.FLongZhao"
+            android:textSize="18sp"
+            tools:ignore="LabelFor" />
+
+    </RelativeLayout>
+</layout>

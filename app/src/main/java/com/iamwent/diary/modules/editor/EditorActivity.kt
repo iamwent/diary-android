@@ -3,35 +3,31 @@ package com.iamwent.diary.modules.editor
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.EditText
 import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
 import com.iamwent.diary.R
-import com.iamwent.diary.data.DiaryRepository
 import com.iamwent.diary.data.bean.Diary
+import com.iamwent.diary.databinding.ActivityEditorBinding
+import com.iamwent.diary.modules.DiaryViewModel
 import com.iamwent.diary.utils.LunarUtil
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class EditorActivity : ComponentActivity() {
-    private var title: EditText? = null
-    private var content: EditText? = null
-    private var location: EditText? = null
-    private var diary: Diary? = null
 
-    @Inject
-    lateinit var diaryRepository: DiaryRepository
+    private val binding: ActivityEditorBinding by lazy {
+        DataBindingUtil.setContentView(this, R.layout.activity_editor)
+    }
+    private val diaryViewModel by viewModels<DiaryViewModel>()
+
+    private val diary: Diary by lazy {
+        intent.getParcelableExtra(EXTRA_DIARY) ?: newDiary()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_editor)
-        val id = intent.getLongExtra(EXTRA_DIARY, 0L)
-        diary = diaryRepository.queryDiary(id)
-        if (diary == null) {
-            diary = newDiary()
-        }
         init()
     }
 
@@ -41,7 +37,7 @@ class EditorActivity : ComponentActivity() {
             id = 0L,
             year = c[Calendar.YEAR],
             month = c[Calendar.MONTH],
-            title = String.format("%s 日", LunarUtil.day2Chinese(c[Calendar.DATE])),
+            title = "%s 日".format(LunarUtil.day2Chinese(c[Calendar.DATE])),
             content = "",
             location = "于 深圳",
             createdAt = System.currentTimeMillis()
@@ -49,48 +45,39 @@ class EditorActivity : ComponentActivity() {
     }
 
     private fun init() {
-        title = findViewById<View>(R.id.et_title) as EditText
-        content = findViewById<View>(R.id.et_content) as EditText
-        location = findViewById<View>(R.id.et_location) as EditText
-        title!!.setText(diary!!.title)
-        content!!.setText(diary!!.content)
-        location!!.setText(diary!!.location)
-        content!!.isSingleLine = false
-        content!!.requestFocus()
-        content!!.setSelection(diary!!.content!!.length)
+        binding.title.setText(diary.title)
+
+        binding.content.setText(diary.content)
+        binding.content.requestFocus()
+        binding.content.setSelection(diary.content?.length ?: 0)
+
+        binding.location.setText(diary.location)
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val content = content!!.editableText.toString()
-        if (content.length == 0) {
-            return
+        val content = binding.content.editableText?.toString() ?: return
+        var title = binding.title.editableText?.toString()
+        if (title.isNullOrEmpty()) {
+            title = "%s 日".format(LunarUtil.day2Chinese(Calendar.getInstance()[Calendar.DATE]))
         }
-        var title = title!!.editableText.toString()
-        if (title.length == 0) {
-            title = String.format("%s 日", LunarUtil.day2Chinese(Calendar.getInstance()[Calendar.DATE]))
-        }
-        val location = location!!.editableText.toString()
+        val location = binding.location.editableText?.toString()
 
-        val newDiary = diary?.copy(
+        val newDiary = diary.copy(
             content = content,
             title = title,
             location = location,
         )
-        if (newDiary!!.id != 0L) {
-            diaryRepository.update(newDiary)
-        } else {
-            diaryRepository.insert(newDiary)
-        }
+        diaryViewModel.updateOrInsert(newDiary)
     }
 
     companion object {
         private const val EXTRA_DIARY = "diary"
 
         @JvmOverloads
-        fun start(context: Context, id: Long = 0L) {
+        fun start(context: Context, diary: Diary? = null) {
             val starter = Intent(context, EditorActivity::class.java)
-            starter.putExtra(EXTRA_DIARY, id)
+            starter.putExtra(EXTRA_DIARY, diary)
             context.startActivity(starter)
         }
     }

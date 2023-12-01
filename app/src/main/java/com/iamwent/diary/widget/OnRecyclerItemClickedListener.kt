@@ -14,7 +14,8 @@ import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
  * @author iamwent
  * @since 9/19/16
  */
-abstract class OnRecyclerItemClickedListener protected constructor(context: Context?) : OnItemTouchListener {
+abstract class OnRecyclerItemClickedListener protected constructor(context: Context?) :
+    OnItemTouchListener {
     protected abstract fun onItemClick(view: View?, position: Int)
     private val detector: GestureDetector
 

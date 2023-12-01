@@ -16,7 +16,6 @@ abstract class DiaryDatabase : RoomDatabase() {
 
         fun get(context: Context): DiaryDatabase {
             return Room.databaseBuilder(context, DiaryDatabase::class.java, NAME)
-                .allowMainThreadQueries()
                 .build()
         }
 

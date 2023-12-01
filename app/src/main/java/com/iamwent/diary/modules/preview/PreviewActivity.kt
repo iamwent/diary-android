@@ -16,52 +16,52 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.webkit.WebSettings
 import android.webkit.WebView
-import android.widget.LinearLayout
 import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
 import com.iamwent.diary.R
-import com.iamwent.diary.data.DiaryRepository
 import com.iamwent.diary.data.bean.Diary
+import com.iamwent.diary.databinding.ActivityPreviewBinding
+import com.iamwent.diary.modules.DiaryViewModel
+import com.iamwent.diary.modules.editor.EditorActivity
 import com.iamwent.diary.utils.LunarUtil
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class PreviewActivity : ComponentActivity(), View.OnClickListener {
-    private var webView: WebView? = null
-    private var layoutContainer: LinearLayout? = null
-    private val contentWidthOffset = 205
-    private var diary: Diary? = null
-    private var toVisiable = true
+    private val binding: ActivityPreviewBinding by lazy {
+        DataBindingUtil.setContentView(this, R.layout.activity_preview)
+    }
 
-    @Inject
-    lateinit var diaryRepository: DiaryRepository
+    private val diaryViewModel by viewModels<DiaryViewModel>()
+
+    private val diary: Diary? by lazy {
+        intent.getParcelableExtra(EXTRA_DIARY)
+    }
+    private var toVisible = true
 
     @SuppressLint("DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WebView.enableSlowWholeDocumentDraw()
-        setContentView(R.layout.activity_preview)
-        diary = intent.getParcelableExtra(EXTRA_DIARY)
-        layoutContainer = findViewById<View>(R.id.layout_container) as LinearLayout
-        webView = findViewById<View>(R.id.web) as WebView
-        webView!!.settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
+        binding.webView.settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
         val detector = GestureDetector(this, object : SimpleOnGestureListener() {
             override fun onLongPress(e: MotionEvent) {}
             override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
-                toVisiable = !toVisiable
-                val animId = if (toVisiable) R.anim.slide_in_bottom else R.anim.slide_out_bottom
+                toVisible = !toVisible
+                val animId = if (toVisible) R.anim.slide_in_bottom else R.anim.slide_out_bottom
                 val animation = AnimationUtils.loadAnimation(this@PreviewActivity, animId)
-                layoutContainer!!.startAnimation(animation)
+                binding.operationContainer.startAnimation(animation)
                 return true
             }
         })
-        webView!!.setOnTouchListener { v, event -> detector.onTouchEvent(event) }
-        webView!!.isLongClickable = false
-        webView!!.isVerticalScrollBarEnabled = false
-        webView!!.isHorizontalScrollBarEnabled = false
+        binding.webView.setOnTouchListener { v, event -> detector.onTouchEvent(event) }
+        binding.webView.isLongClickable = false
+        binding.webView.isVerticalScrollBarEnabled = false
+        binding.webView.isHorizontalScrollBarEnabled = false
     }
 
     override fun onResume() {
@@ -75,17 +75,20 @@ class PreviewActivity : ComponentActivity(), View.OnClickListener {
             ?.replace(HOLDER_LOCATION, diary!!.location!!)
             ?.replace(HOLDER_TIME_STRING, LunarUtil.time2Chinese(diary!!.createdAt))
             ?: return
-        webView!!.loadDataWithBaseURL("file:///android_asset/", html, MIME, ENCODING, null)
+        binding.webView.loadDataWithBaseURL("file:///android_asset/", html, MIME, ENCODING, null)
     }
 
     override fun onClick(v: View) {
         when (v.id) {
+            R.id.compose -> EditorActivity.start(this, diary)
+            R.id.share -> share()
+            R.id.delete -> diary?.let { diaryViewModel.delete(it) }
         }
     }
 
     private fun share() {
         // todo
-        val path = save2sdcard(screenshot(webView))
+        val path = save2sdcard(screenshot(binding.webView))
         val shareIntent = Intent()
         shareIntent.setAction(Intent.ACTION_SEND)
         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://$path"))
@@ -135,7 +138,7 @@ class PreviewActivity : ComponentActivity(), View.OnClickListener {
     }
 
     private fun delete() {
-        diary?.let { diaryRepository.delete(it) }
+        diary?.let { diaryViewModel.delete(it) }
         onBackPressed()
     }
 

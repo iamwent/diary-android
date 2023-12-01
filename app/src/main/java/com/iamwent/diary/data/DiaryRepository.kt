@@ -1,8 +1,8 @@
 package com.iamwent.diary.data
 
-import android.annotation.SuppressLint
 import com.iamwent.diary.data.bean.Diary
 import com.iamwent.diary.data.local.DiaryDatabase
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,33 +17,31 @@ class DiaryRepository @Inject constructor(
     private val diaryDatabase: DiaryDatabase
 ) {
 
-    @SuppressLint("Range")
-    fun queryYears(): List<Int> {
+    fun queryYears(): Flow<List<Int>> {
         return diaryDatabase.diaryDao().queryYears()
     }
 
-    @SuppressLint("Range")
-    fun queryMonthsByYear(year: Int): List<Int> {
+    fun queryMonthsByYear(year: Int): Flow<List<Int>> {
         return diaryDatabase.diaryDao().queryMonthsByYear(year)
     }
 
-    fun queryDiary(id: Long): Diary? {
+    suspend fun queryDiary(id: Long): Diary? {
         return diaryDatabase.diaryDao().queryDiary(id)
     }
 
-    fun queryDaysByYearAndMonth(year: Int, month: Int): List<Diary> {
+    fun queryDiariesByYearAndMonth(year: Int, month: Int): Flow<List<Diary>> {
         return diaryDatabase.diaryDao().queryDaysByYearAndMonth(year, month)
     }
 
-    fun insert(diary: Diary) {
+    suspend fun insert(diary: Diary) {
         diaryDatabase.diaryDao().insert(diary)
     }
 
-    fun update(diary: Diary) {
+    suspend fun update(diary: Diary) {
         diaryDatabase.diaryDao().update(diary)
     }
 
-    fun delete(diary: Diary) {
+    suspend fun delete(diary: Diary) {
         diaryDatabase.diaryDao().delete(diary)
     }
 

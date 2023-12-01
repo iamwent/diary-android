@@ -1,14 +1,12 @@
 package com.iamwent.diary.modules.day
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.iamwent.diary.R
 import com.iamwent.diary.data.bean.Diary
+import com.iamwent.diary.databinding.ItemDayBinding
 
 /**
  * Created by iamwent on 9/19/16.
@@ -16,34 +14,31 @@ import com.iamwent.diary.data.bean.Diary
  * @author iamwent
  * @since 9/19/16
  */
-internal class DayListAdapter(private val ctx: Context, private val diaries: List<Diary>?) : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
-    @LayoutRes
-    private fun provideItemLayout(): Int {
-        return R.layout.item_day
+internal class DayListAdapter : ListAdapter<Diary, DiaryViewHolder>(DiaryItemCallback) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemDayBinding.inflate(inflater, parent, false)
+        return DiaryViewHolder(binding)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(ctx).inflate(provideItemLayout(), parent, false)
-        return ViewHolder(view)
+    override fun onBindViewHolder(holder: DiaryViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(diaries!![position])
+}
+
+internal class DiaryViewHolder(
+    private val binding: ItemDayBinding
+) : RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(diary: Diary) {
+        binding.day.text = diary.title
     }
+}
 
-    override fun getItemCount(): Int {
-        return diaries?.size ?: 0
-    }
+object DiaryItemCallback : DiffUtil.ItemCallback<Diary>() {
+    override fun areItemsTheSame(oldItem: Diary, newItem: Diary) = oldItem.id == newItem.id
 
-    internal class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvDay: TextView
-
-        init {
-            tvDay = itemView.findViewById<View>(R.id.tv_day) as TextView
-        }
-
-        fun bind(diary: Diary) {
-            tvDay.text = diary.title
-        }
-    }
+    override fun areContentsTheSame(oldItem: Diary, newItem: Diary) = oldItem == newItem
 }
