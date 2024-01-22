@@ -3,8 +3,11 @@ package com.iamwent.diary.data.bean
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.iamwent.diary.extension.ofEpochMilli
 import kotlinx.parcelize.Parcelize
+import java.time.LocalDateTime
 
 /**
  * Created by iamwent on 9/19/16.
@@ -17,7 +20,7 @@ import kotlinx.parcelize.Parcelize
 data class Diary(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = ID)
-    val id: Long = 0,
+    val id: Long? = null,
 
     @ColumnInfo(name = YEAR)
     val year: Int = 0,
@@ -37,14 +40,19 @@ data class Diary(
     @ColumnInfo(name = CREATED_AT)
     val createdAt: Long = 0,
 ) : Parcelable {
+
+    @get:Ignore
+    val createdDateTime: LocalDateTime
+        get() = ofEpochMilli(createdAt)
+
     companion object {
         const val TABLE = "diaries"
         const val ID = "id"
         const val YEAR = "year"
         const val MONTH = "month"
-        const val LOCATION = "location"
         const val TITLE = "title"
         const val CONTENT = "content"
+        const val LOCATION = "location"
         const val CREATED_AT = "created_at"
     }
 }

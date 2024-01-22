@@ -35,7 +35,8 @@
     <string name="label_compose">撰</string>
     <string name="label_edit">改</string>
     <string name="label_share">存</string>
-    <string name="label_delete">删</string>gst
+    <string name="label_delete">删</string>
+    <string name="label_done">完</string>
     <string name="logo_char_0">小</string>
     <string name="logo_char_1">记</string>
 

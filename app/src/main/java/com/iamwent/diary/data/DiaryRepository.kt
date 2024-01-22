@@ -17,24 +17,27 @@ class DiaryRepository @Inject constructor(
     private val diaryDatabase: DiaryDatabase
 ) {
 
-    fun queryYears(): Flow<List<Int>> {
-        return diaryDatabase.diaryDao().queryYears()
-    }
+    val yearFlow: Flow<List<Int>>
+        get() = diaryDatabase.diaryDao().queryYears()
 
-    fun queryMonthsByYear(year: Int): Flow<List<Int>> {
-        return diaryDatabase.diaryDao().queryMonthsByYear(year)
+    suspend fun queryMonths(year: Int): List<Int> {
+        return diaryDatabase.diaryDao().queryMonth(year)
     }
 
     suspend fun queryDiary(id: Long): Diary? {
         return diaryDatabase.diaryDao().queryDiary(id)
     }
 
-    fun queryDiariesByYearAndMonth(year: Int, month: Int): Flow<List<Diary>> {
-        return diaryDatabase.diaryDao().queryDaysByYearAndMonth(year, month)
+    suspend fun queryDiaries(year: Int, month: Int): List<Diary> {
+        return diaryDatabase.diaryDao().queryDiaries(year, month)
     }
 
-    suspend fun insert(diary: Diary) {
-        diaryDatabase.diaryDao().insert(diary)
+    suspend fun insert(diary: Diary): Long {
+        return diaryDatabase.diaryDao().insert(diary)
+    }
+
+    suspend fun insertAll(diaries: List<Diary>) {
+        return diaryDatabase.diaryDao().insertAll(diaries)
     }
 
     suspend fun update(diary: Diary) {
