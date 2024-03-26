@@ -3,7 +3,7 @@ package com.iamwent.diary.utils
 import com.iamwent.diary.utils.LunarUtil.day2Chinese
 import com.iamwent.diary.utils.LunarUtil.month2Chinese
 import com.iamwent.diary.utils.LunarUtil.year2Chinese
-import junit.framework.Assert.assertEquals
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
@@ -23,7 +23,7 @@ class LunarUtilTest {
     @Test
     fun month2Chinese() {
         assertEquals("六", month2Chinese(6))
-        assertEquals("十", month2Chinese(9))
+        assertEquals("十", month2Chinese(10))
         assertEquals("十二", month2Chinese(12))
     }
 
