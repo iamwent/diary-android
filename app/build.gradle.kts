@@ -6,7 +6,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
     id("androidx.room")
-    id("com.github.takahirom.decomposer")
+    id("io.github.iamwent.decompiler")
 }
 
 kapt {
