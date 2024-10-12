@@ -7,10 +7,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("androidx.room")
     id("io.github.iamwent.decompiler")
-}
-
-kapt {
-    correctErrorTypes = true
+    alias(libs.plugins.compose.compiler)
 }
 
 room {
@@ -86,7 +83,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.navigation.compose)

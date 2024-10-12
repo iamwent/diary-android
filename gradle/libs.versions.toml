@@ -2,20 +2,20 @@
 accompanist = "0.32.0"
 androidDesugarJdkLibs = "2.0.4"
 # AGP and tools should be updated together
-androidGradlePlugin = "8.3.1"
-androidTools = "31.3.1"
+androidGradlePlugin = "8.7.0"
+androidTools = "31.7.0"
 androidxActivity = "1.8.2"
 androidxAppCompat = "1.6.1"
 androidxBrowser = "1.8.0"
-androidxComposeBom = "2024.03.00"
+androidxComposeBom = "2024.09.03"
 androidxComposeCompiler = "1.5.11"
 androidxComposeRuntimeTracing = "1.0.0-beta01"
-androidxCore = "1.12.0"
+androidxCore = "1.13.1"
 androidxCoreSplashscreen = "1.1.0-alpha02"
 androidxDataStore = "1.0.0"
 androidxEspresso = "3.5.1"
 androidxHiltNavigationCompose = "1.2.0"
-androidxLifecycle = "2.7.0"
+androidxLifecycle = "2.8.3"
 androidxMacroBenchmark = "1.2.3"
 androidxMetrics = "1.0.0-beta01"
 androidxNavigation = "2.7.7"
@@ -26,29 +26,28 @@ androidxTestRules = "1.5.0"
 androidxTestRunner = "1.5.2"
 androidxTracing = "1.2.0"
 androidxUiAutomator = "2.3.0"
-androidxWebkit = "1.10.0"
+androidxWebkit = "1.12.1"
 androidxWindowManager = "1.2.0"
-androidxWork = "2.9.0"
-coil = "2.5.0"
-dependencyGuard = "0.4.3"
+androidxWork = "2.9.1"
+coil = "3.0.0-rc01"
+dependencyGuard = "0.5.0"
 firebaseBom = "32.8.0"
 firebaseCrashlyticsPlugin = "2.9.9"
 firebasePerfPlugin = "1.4.2"
 gmsPlugin = "4.4.1"
 googleOss = "17.0.1"
 googleOssPlugin = "0.10.6"
-#hilt = "2.50"
-hilt = "2.51"
+hilt = "2.52"
 hiltExt = "1.2.0"
 jacoco = "0.8.7"
 junit = "1.1.5"
 junit4 = "4.13.2"
-kotlin = "1.9.23"
+kotlin = "2.0.21"
 kotlinxCoroutines = "1.8.0"
 kotlinxDatetime = "0.5.0"
 kotlinxSerializationJson = "1.6.2"
-ksp = "1.9.23-1.0.19"
-lifecycleRuntimeKtx = "2.7.0"
+ksp = "2.0.21-1.0.25"
+lifecycleRuntimeKtx = "2.8.3"
 okhttp = "4.12.0"
 protobuf = "3.24.4"
 protobufPlugin = "0.9.4"
@@ -109,9 +108,9 @@ androidx-tracing-ktx = { group = "androidx.tracing", name = "tracing-ktx", versi
 androidx-webkit = { group = "androidx.webkit", name = "webkit", version.ref = "androidxWebkit" }
 androidx-work-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
 androidx-work-testing = { group = "androidx.work", name = "work-testing", version.ref = "androidxWork" }
-coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
-coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
-coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+coil-kt = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
+coil-kt-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-kt-svg = { group = "io.coil-kt.coil3", name = "coil-svg", version.ref = "coil" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx" }
@@ -177,3 +176,4 @@ roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 room = { id = "androidx.room", version.ref = "room" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 decompiler = { id = "io.github.iamwent.decompiler", version.ref = "decompiler" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
